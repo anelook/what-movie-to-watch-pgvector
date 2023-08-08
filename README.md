@@ -7,8 +7,8 @@ In this lab you'll learn how to build a recommendation system using vector searc
 ## Building a Movie Recommender with Postgres, Vector Search, and Next.js | Project Intro
 Short information on what we'll build
 
-## JSON Movie Dataset: Kickstarting the Work on Movie Recommendation Engine | 1
-Share the link to the dataset, show the original source abd explain what additional steps were done to the dataset
+## JSON Movie Dataset: kickstarting the work on Movie Recommendation Engine | 1
+Share the link to the dataset, show the original source and explain what additional steps were done to the dataset
 
 ## Creating Vector Embeddings: Tensorflow universal-sentence-encoder and Node.js | 2
 Create encoder.js and add code to get a single vector embedding for a movie
@@ -17,6 +17,22 @@ Create encoder.js and add code to get a single vector embedding for a movie
 create service pg-movie-app
 connect with pgAdmin - create a table
 connect with NodeJS - get version
+```sql
+CREATE TABLE movie_plots (
+    title VARCHAR,
+    director VARCHAR,
+    cast VARCHAR,
+    genre VARCHAR,
+    plot TEXT,
+    year SMALLINT,
+    wiki VARCHAR,
+    embedding vector(512)
+);
+```
+
+```sql
+CREATE EXTENSION vector;
+```
 
 ## Efficiency: Batch Tensorflow vector generation and data insertion with pg-promise multiple rows | 4
 change the file to iterate over all movies
