@@ -1,8 +1,9 @@
 import {useRef, useState} from 'react';
+import type Movie from 'movie.d.ts'
 
 export default function Home() {
-    const [plots, setPlots] = useState([])
-    const [isLoading, setIsLoading] = useState(false);
+    const [moviePlots, setMoviePlots] = useState<Movie[]>([])
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const searchInput = useRef();
 
     function search(event) {
@@ -18,7 +19,7 @@ export default function Home() {
                 'Content-Type': 'application/json'
             }
         }).then(response => response.json()).then(data => {
-            setPlots(data);
+            setMoviePlots(data);
             setIsLoading(false)
         });
     }
@@ -71,7 +72,7 @@ export default function Home() {
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                     </svg>
-                </div>) : plots.map(item =>
+                </div>) : moviePlots.map(item =>
                     <div key={item.title}
                          className="relative p-10 rounded-xl binline-block justify-start rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-darkBlue items-start">
                         <div className="text-6xl absolute top-4 right-4 opacity-80">🍿</div>
