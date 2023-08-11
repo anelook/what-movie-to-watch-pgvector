@@ -7,14 +7,10 @@ const tf = require('@tensorflow/tfjs-node');
 const use = require('@tensorflow-models/universal-sentence-encoder');
 
 const postgresqlUri = process.env.PG_CONNECTION_STRING;
-
 const conn = new URL(postgresqlUri);
-conn.search = "";
-
 const config = {
   connectionString: conn.href,
   ssl: {
-    rejectUnauthorized: true,
     ca: readFileSync('./certificates/ca.pem').toString(),
   },
 };

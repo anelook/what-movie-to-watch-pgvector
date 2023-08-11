@@ -1,40 +1,35 @@
 require('dotenv').config();
 const fs = require('fs');
 const pg = require('pg');
-const tf = require('@tensorflow/tfjs-node');
+require('@tensorflow/tfjs-node');
 const use = require('@tensorflow-models/universal-sentence-encoder');
 
-const conn = new URL(process.env.PG_CONNECTION_STRING);
-conn.search = "";
-
 const config = {
-    connectionString: conn.href,
+    user: process.env.PG_NAME,
+    password: process.env.PG_PASSWORD,
+    host: process.env.PG_HOST,
+    port: process.env.PG_PORT,
+    database: "defaultdb",
     ssl: {
         rejectUnauthorized: true,
         ca: fs.readFileSync('./ca.pem').toString(),
     },
 };
-const client = new pg.Client(config);
 
 use.load().then(async model => {
     const embeddings = await model.embed("a lot of cute puppies");
     const embeddingArray = embeddings.arraySync()[0];
-    client.connect(function (err) {
-        if (err)
-            throw err;
 
-        client.query(`SELECT * FROM movie_plots ORDER BY embedding <-> '${JSON.stringify(embeddingArray)}' LIMIT 5;`, [], function (err, result) {
-            if (err)
-                throw err;
-
-            console.log(result.rows);
-            client.end(function (err) {
-                if (err)
-                    throw err;
-            });
-        });
-    });
-
+    const client = new pg.Client(config);
+    await client.connect();
+    try {
+        const pgResponse = await client.query(`SELECT * FROM movie_plots ORDER BY embedding <-> '${JSON.stringify(embeddingArray)}' LIMIT 5;`);
+        console.log(pgResponse.rows);
+    } catch (err) {
+        console.error(err);
+    } finally {
+        await client.end()
+    }
 });
 
 
