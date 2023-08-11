@@ -15,8 +15,12 @@ detail what needs to be done.
 Install dependencies for Tensorflow. Make sure that you path does not include spaces or weird characters (`tfjs-node` is
 very picky):
 
-```npm install @tensorflow-models/universal-sentence-encoder --save```
-```npm install @tensorflow/tfjs-node --save```
+```bash
+npm install @tensorflow-models/universal-sentence-encoder --save
+```
+```bash
+npm install @tensorflow/tfjs-node --save
+```
 
 Order is important, otherwise you might have to deal with peer-dependencies issue.
 
@@ -39,7 +43,9 @@ use.load().then(async model => {
 
 Run:
 
-```node encoder.js```
+```bash
+node encoder.js
+```
 
 Note, even though we don't use the output from ```require('@tensorflow/tfjs-node');``` directly, do not remove this
 line, it is needed for Tensorflow to work correctly.
@@ -80,10 +86,14 @@ CREATE TABLE movie_plots (
 ### Connect with NodeJS
 
 Install node-postgres:
-```npm install pg --save```
+```bash
+npm install pg --save
+```
 
 Install dotenv to store credentials:
-```npm install dotenv --save```
+```bash
+npm install dotenv --save
+```
 
 Create .env file and add the following connection information:
 
@@ -99,7 +109,9 @@ Download the **ca.pem** certificate. Add both **.env** and **ca.pem** to **.giti
 ### Send request to PG from NodeJS
 
 In **encoder.js** include
-```require('dotenv').config();```
+```js
+require('dotenv').config();
+```
 
 Add connection configuration:
 
@@ -140,7 +152,9 @@ try {
 To generate and send a multi-row insert query, we'll
 use [pg-promise](https://github.com/vitaly-t/pg-promise/wiki/Data-Imports);
 
-```npm install pg-promise --save```
+```bash
+npm install pg-promise --save
+```
 
 Include pg-promise to encoder.js:
 
@@ -204,7 +218,9 @@ use.load().then(async model => {
 
 ### Run to send the complete dataset and corresponding embeddings to PostgreSQL
 
-```node encoder.js```
+```bash
+node encoder.js
+```
 
 ## Step 4. Contextual Search with PGVector: Node.js and Tensorflow Magic
 [Video for Step 4](TODO)
@@ -258,7 +274,9 @@ use.load().then(async model => {
 ```
 
 Run to get the results:
-```node recommender.js```
+```bash
+node recommender.js
+```
 
 # Part 2. Next.js
 
@@ -271,13 +289,21 @@ Run to get the results:
 
 ### Add dependencies
 
-```npm install @tensorflow-models/universal-sentence-encoder --save```
+```bash
+npm install @tensorflow-models/universal-sentence-encoder --save
+```
 
-```npm install @tensorflow/tfjs-node --save```
+```bash
+npm install @tensorflow/tfjs-node --save
+```
 
-```npm install pg --save```
+```bash
+npm install pg --save
+```
 
-```npm install dotenv --save```
+```bash
+npm install dotenv --save
+```
 
 ### Add PG credentials
 
@@ -292,16 +318,17 @@ Download **ca.pem** and add it to **/certificates**
 
 Add secret information to .gitignore
 
-```js
-.
-env
+```bash
+.env
 
 / certificates
 ```
 
 ### Run
 
-```npm dev run```
+```bash
+npm dev run
+```
 
 Open [localhost:3000](localhost:3000) to see the landing page. Open [localhost:3000/api/hello](localhost:3000/api/hello)
 to see a test backend api call.
@@ -313,7 +340,7 @@ to see a test backend api call.
 
 Create movie.d.ts:
 
-```
+```js
 declare type Movie = {
     title: string,
     director: string,
