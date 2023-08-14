@@ -1,16 +1,22 @@
-# Movie recommender using Tensorflow, Postgres, PGVector, vector search and Next.js. Step by step concise guide.
+# Movie recommender using Tensorflow, Postgres, PGVector, vector search and Next.js. Step by step guide.
 
-Here you'll find the instructions to build a movie recommendation system. Each step has a corresponding video showing in
-detail what needs to be done.
+Building a Movie Recommender: Leveraging Tensorflow, Postgres, PGVector, and Next.js for Advanced Vector Search - A Detailed Step-by-Step Tutorial
 
-## Step 1. Creating Vector Embeddings: Tensorflow universal-sentence-encoder and Node.js
+Here you'll find the instructions to build a movie recommendation system. Each step has a corresponding video showing in detail what needs to be done.
+
+## Part 1. First steps with Tensorflow and PGVector
+
+### Step 1. Creating Vector Embeddings: Tensorflow universal-sentence-encoder and Node.js
 [Video for Step 1](TODO)
 
-### Get the dataset in JSON format
+##### Get the dataset in JSON format
 
 [Download the dataset](TODO).
 
-### Add dependencies
+##### New to NodeJS?
+Download and install from here https://nodejs.org/en/download
+
+##### Add dependencies
 
 Install dependencies for Tensorflow. Make sure that you path does not include spaces or weird characters (`tfjs-node` is
 very picky):
@@ -24,7 +30,7 @@ npm install @tensorflow/tfjs-node --save
 
 Order is important, otherwise you might have to deal with peer-dependencies issue.
 
-### Add encoder
+##### Add encoder
 
 Create **encoder.js** file with the following content:
 
@@ -50,14 +56,14 @@ node encoder.js
 Note, even though we don't use the output from ```require('@tensorflow/tfjs-node');``` directly, do not remove this
 line, it is needed for Tensorflow to work correctly.
 
-## Step 2. Cloud-Hosted free PostgreSQL setup: create Table, enable PGVector
+### Step 2. Cloud-Hosted free PostgreSQL setup: create Table, enable PGVector
 [Video for Step 2](TODO)
-### Create service pg-movie-app
+##### Create service pg-movie-app
 
 For this lab we recommend using a free service with Aiven for PostgreSQL. To get extra 100$ credits when signing up with
 Aiven use [this link](https://console.aiven.io/signup?referral_code=tn1i56u0u35j0hpbgbd6).
 
-### Test with pgAdmin
+##### Test with pgAdmin
 
 To use Aiven for Postgres with pgAdmin, click on Quick Connect and select to connect with pgAdmin. You can download
 there pgConnect.json that can be imported into pgAdmin as a server.
@@ -83,7 +89,7 @@ CREATE TABLE movie_plots (
 );
 ```
 
-### Connect with NodeJS
+##### Connect with NodeJS
 
 Install node-postgres:
 ```bash
@@ -106,7 +112,7 @@ PG_PORT=
 
 Download the **ca.pem** certificate. Add both **.env** and **ca.pem** to **.gitignore**
 
-### Send request to PG from NodeJS
+##### Send request to PG from NodeJS
 
 In **encoder.js** include
 ```js
@@ -144,10 +150,10 @@ try {
 }
 ```
 
-## Step 3. Efficiency: Batch Tensorflow vector generation and data insertion with pg-promise multiple rows
+### Step 3. Efficiency: Batch Tensorflow vector generation and data insertion with pg-promise multiple rows
 [Video for Step 3](TODO)
 
-### Add pg-promise
+##### Add pg-promise
 
 To generate and send a multi-row insert query, we'll
 use [pg-promise](https://github.com/vitaly-t/pg-promise/wiki/Data-Imports);
@@ -194,7 +200,7 @@ const storeInPG = (moviePlots) => {
 }
 ```
 
-### Tensorflow and batch processing
+##### Tensorflow and batch processing
 
 Iterate over all movies and get the encodings with Tensorflow. We'll divide data into batches for faster processing:
 
@@ -216,16 +222,16 @@ use.load().then(async model => {
 });
 ```
 
-### Run to send the complete dataset and corresponding embeddings to PostgreSQL
+##### Run to send the complete dataset and corresponding embeddings to PostgreSQL
 
 ```bash
 node encoder.js
 ```
 
-## Step 4. Contextual Search with PGVector: Node.js and Tensorflow Magic
+### Step 4. Contextual Search with PGVector: Node.js and Tensorflow Magic
 [Video for Step 4](TODO)
 
-### Add a script with recommender logic
+##### Add a script with recommender logic
 
 Create recommender.js and include dependencies:
 
@@ -278,16 +284,16 @@ Run to get the results:
 node recommender.js
 ```
 
-# Part 2. Next.js
+## Part 2. Next.js
 
-## Step 5. Next.js Project Setup: Postgres and Tensorflow Dependencies, testing backend
+### Step 5. Next.js Project Setup: Postgres and Tensorflow Dependencies, testing backend
 [Video for Step 5](TODO)
 
-### Get started with Next.js project
+##### Get started with Next.js project
 
 ```npx create-next-app@latest```
 
-### Add dependencies
+##### Add dependencies
 
 ```bash
 npm install @tensorflow-models/universal-sentence-encoder --save
@@ -305,13 +311,13 @@ npm install pg --save
 npm install dotenv --save
 ```
 
-### Add PG credentials
+##### Add PG credentials
 
 ```js
 PG_NAME =
-    PG_PASSWORD =
-        PG_HOST =
-            PG_PORT =
+PG_PASSWORD =
+PG_HOST =
+PG_PORT =
 ```
 
 Download **ca.pem** and add it to **/certificates**
@@ -321,10 +327,10 @@ Add secret information to .gitignore
 ```bash
 .env
 
-/ certificates
+/certificates
 ```
 
-### Run
+##### Run
 
 ```bash
 npm dev run
@@ -333,10 +339,10 @@ npm dev run
 Open [localhost:3000](localhost:3000) to see the landing page. Open [localhost:3000/api/hello](localhost:3000/api/hello)
 to see a test backend api call.
 
-## Step 6. Nearest Vector Retrieval: Tensorflow universal-sentence-encoder and PGVector-Powered Queries in Next.js
+### Step 6. Nearest Vector Retrieval: Tensorflow universal-sentence-encoder and PGVector-Powered Queries in Next.js
 [Video for Step 6](TODO)
 
-### Add an interface for a movie
+##### Add an interface for a movie
 
 Create movie.d.ts:
 
@@ -355,7 +361,7 @@ declare type Movie = {
 export default Movie;
 ```
 
-### Add backend calls
+##### Add backend calls
 
 Create a new backend endpoint, **pages/api/recommendations.ts**.
 
@@ -406,7 +412,7 @@ export default async function handler(
 
 ```
 
-## Step 7. Frontend Integration: Next.js Movie Recommender UI and calls to Tensorflow and PG
+### Step 7. Frontend Integration: Next.js Movie Recommender UI and calls to Tensorflow and PG
 [Video for Step 7](TODO)
 
 In pages/index.tsx to request movies add:
@@ -457,10 +463,10 @@ return (
 )
 ```
 
-## Step 8. Polishing and Testing: Styling Movie Recommender UI with Tailwind CSS
+### Step 8. Polishing and Testing: Styling Movie Recommender UI with Tailwind CSS
 [Video for Step 8](TODO)
 
 We'll add some styling with [Tailwind CSS](https://tailwindcss.com/).
 
-## Final Verdict: PGVector, Tensorflow, Node.js, and Next.js - Success or Hiccup? 
+### Final Verdict: PGVector, Tensorflow, Node.js, and Next.js - Success or Hiccup? 
 [Video for Step 9](TODO)
